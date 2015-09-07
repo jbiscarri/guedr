@@ -6,23 +6,29 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+
+    private ImageView mImageView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        final ImageView imageView = (ImageView) findViewById(R.id.weather_image);
-        Button changeButton = (Button) findViewById(R.id.change_system_button);
-
-        changeButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                imageView.setImageResource(R.drawable.offline_weather2);
-            }
-        });
-
+        mImageView = (ImageView) findViewById(R.id.weather_image);
+        findViewById(R.id.change_system1_button).setOnClickListener(this);
+        findViewById(R.id.change_system2_button).setOnClickListener(this);
     }
 
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.change_system1_button:
+                mImageView.setImageResource(R.drawable.offline_weather);
+                break;
+            case R.id.change_system2_button:
+                mImageView.setImageResource(R.drawable.offline_weather2);
+                break;
+        }
+    }
 }

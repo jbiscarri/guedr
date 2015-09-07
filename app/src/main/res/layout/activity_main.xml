@@ -23,14 +23,26 @@
         android:layout_weight="1"
         android:layout_gravity="center_horizontal"
         />
-
-    <Button
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/change_system_button"
-        android:text="@string/weather_change_button"
-        android:layout_gravity="center_horizontal"
-        />
+        android:orientation="horizontal">
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/change_system1_button"
+            android:text="Sistema Europeo"
+            android:layout_weight="1"
+            />
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/change_system2_button"
+            android:text="Sistema americano"
+            android:layout_weight="1"
+            />
+    </LinearLayout>
+
 
 </LinearLayout>
 
