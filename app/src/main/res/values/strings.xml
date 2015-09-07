@@ -1,6 +1,8 @@
 <resources>
     <string name="app_name">Guedr</string>
 
-    <string name="hello_world">Hello world!</string>
+    <string name="hello_world">Hello Hello!</string>
     <string name="action_settings">Settings</string>
+    <string name="weather_change_button">Cambiar sistema de predicción</string>
+
 </resources>
