@@ -5,8 +5,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ToggleButton;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+public class MainActivity extends AppCompatActivity {
 
     private ImageView mImageView;
 
@@ -16,19 +17,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
 
         mImageView = (ImageView) findViewById(R.id.weather_image);
-        findViewById(R.id.change_system1_button).setOnClickListener(this);
-        findViewById(R.id.change_system2_button).setOnClickListener(this);
+        final ToggleButton button = (ToggleButton) findViewById(R.id.change_system_button);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mImageView.setImageResource(button.isChecked() ? R.drawable.offline_weather2 : R.drawable.offline_weather );
+            }
+        });
     }
 
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.change_system1_button:
-                mImageView.setImageResource(R.drawable.offline_weather);
-                break;
-            case R.id.change_system2_button:
-                mImageView.setImageResource(R.drawable.offline_weather2);
-                break;
-        }
-    }
+
 }
