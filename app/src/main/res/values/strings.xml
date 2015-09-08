@@ -4,10 +4,11 @@
     <string name="hello_world">Hello Hello!</string>
     <string name="action_settings">Ajustes</string>
     <string name="weather_change_button">Cambiar sistema de predicción</string>
-    <string name="max_temp_parameter">Temperatura máxima: %.2f </string>
-    <string name="min_temp_parameter">Temperatura máxima: %.2f </string>
+    <string name="max_temp_parameter">Temperatura máxima: %1$.2f %2$s</string>
+    <string name="min_temp_parameter">Temperatura máxima: %1$.2f %2$s </string>
     <string name="humidity_parameter">Humedad: %d%%</string>
     <string name="updated_preferences">Preferencias actualizadas</string>
     <string name="undo">Deshacer</string>
+    <string name="city_example">Barcelona</string>
 
 </resources>

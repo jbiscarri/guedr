@@ -1,62 +1,9 @@
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    android:paddingBottom="@dimen/activity_vertical_margin" tools:context=".activity_forecast"
-    android:weightSum="1">
+<?xml version="1.0" encoding="utf-8"?>
+<fragment xmlns:android="http://schemas.android.com/apk/res/android"
+          xmlns:tools="http://schemas.android.com/tools"
+          android:layout_width="match_parent"
+          android:layout_height="match_parent"
+          android:name="com.biscarri.guedr.fragment.ForecastFragment"
+          tools:layout="@layout/fragment_forecast"> //Sirve para previsualizar el fragment y ver como queda la pantalla
 
-    <ImageView
-        android:id="@+id/forecast_image"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/sun_cloud"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"/>
-
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_toRightOf="@+id/forecast_image"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true">
-
-        <TextView
-            android:id="@+id/max_temp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Temperatura máxima: "/>
-
-        <TextView
-            android:id="@+id/min_temp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Temperatura mínima: "/>
-
-        <TextView
-            android:id="@+id/humidity"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Humedad máxima: "/>
-
-    </LinearLayout>
-
-    <TextView
-        android:id="@+id/forecast_description"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/forecast_image"
-        android:text="Soleado con algunas nubes"
-        />
-
-
-</RelativeLayout>
-
+</fragment>
