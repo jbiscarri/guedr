@@ -2,7 +2,12 @@
     <string name="app_name">Güedr</string>
 
     <string name="hello_world">Hello Hello!</string>
-    <string name="action_settings">Settings</string>
+    <string name="action_settings">Ajustes</string>
     <string name="weather_change_button">Cambiar sistema de predicción</string>
+    <string name="max_temp_parameter">Temperatura máxima: %.2f </string>
+    <string name="min_temp_parameter">Temperatura máxima: %.2f </string>
+    <string name="humidity_parameter">Humedad: %d%%</string>
+    <string name="updated_preferences">Preferencias actualizadas</string>
+    <string name="undo">Deshacer</string>
 
 </resources>
