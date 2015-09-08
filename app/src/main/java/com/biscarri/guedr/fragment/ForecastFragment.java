@@ -46,7 +46,7 @@ public class ForecastFragment extends Fragment {
         arguments.putSerializable(ARG_CITY, city);
         forecastFragment.setArguments(arguments);
 
-        return new ForecastFragment();
+        return forecastFragment;
     }
 
     //Implemento oncreate por que tengo menu
