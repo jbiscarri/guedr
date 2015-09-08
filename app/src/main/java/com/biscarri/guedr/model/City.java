@@ -1,9 +1,11 @@
 package com.biscarri.guedr.model;
 
+import java.io.Serializable;
+
 /**
  * Created by joanbiscarri on 09/09/15.
  */
-public class City {
+public class City implements Serializable{
     private String mName;
     private Forecast mForecast;
 

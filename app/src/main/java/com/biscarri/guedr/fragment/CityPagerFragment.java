@@ -11,6 +11,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.biscarri.guedr.R;
+import com.biscarri.guedr.model.Cities;
+import com.biscarri.guedr.model.City;
 
 /**
  * Created by joanbiscarri on 08/09/15.
@@ -34,23 +36,27 @@ public class CityPagerFragment extends Fragment {
 
     protected class CityPagerAdapter extends FragmentPagerAdapter {
 
+        private Cities mCities;
+
         public CityPagerAdapter(FragmentManager fm) {
             super(fm);
+            mCities = Cities.getInstance();
         }
 
         @Override
         public int getCount() {
-            return 5;
+            return mCities.getCities().size();
         }
 
         @Override
         public Fragment getItem(int i) {
-            return ForecastFragment.newInstance();
+            return ForecastFragment.newInstance(mCities.getCities().get(i));
         }
 
         @Override
         public CharSequence getPageTitle(int position) {
-            return String.format("Ciudad número %d", position + 1);
+            City city = mCities.getCities().get(position);
+            return String.format(city.getName());
         }
     }
 }

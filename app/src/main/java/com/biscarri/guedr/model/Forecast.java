@@ -1,9 +1,11 @@
 package com.biscarri.guedr.model;
 
+import java.io.Serializable;
+
 /**
  * Created by joanbiscarri on 07/09/15.
  */
-public class Forecast {
+public class Forecast  implements Serializable{
 
     private float mMaxTemp;
     private float mMinTemp;

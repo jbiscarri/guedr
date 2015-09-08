@@ -2,7 +2,6 @@ package com.biscarri.guedr.activity;
 
 import android.app.FragmentManager;
 import android.os.Bundle;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v7.app.AppCompatActivity;
 
 import com.biscarri.guedr.R;

@@ -18,12 +18,15 @@ import android.widget.TextView;
 
 import com.biscarri.guedr.R;
 import com.biscarri.guedr.activity.SettingsActivity;
+import com.biscarri.guedr.model.City;
 import com.biscarri.guedr.model.Forecast;
 
 /**
  * Created by joanbiscarri on 08/09/15.
  */
 public class ForecastFragment extends Fragment {
+
+    private static final String ARG_CITY = "city";
 
     private ImageView mIcon;
     private TextView mMaxTemp;
@@ -36,7 +39,13 @@ public class ForecastFragment extends Fragment {
 
     private View mRoot;
 
-    public static Fragment newInstance() {
+    public static Fragment newInstance(City city) {
+        ForecastFragment forecastFragment= new ForecastFragment();
+
+        Bundle arguments = new Bundle();
+        arguments.putSerializable(ARG_CITY, city);
+        forecastFragment.setArguments(arguments);
+
         return new ForecastFragment();
     }
 
@@ -60,7 +69,8 @@ public class ForecastFragment extends Fragment {
         mIcon = (ImageView) root.findViewById(R.id.forecast_image);
         mCurrentMetrics = getCurrentMetricsFromSettings();
 
-        setForecast(new Forecast((float) 30.5, 27, 70, "This is a description", "ico01"));
+        City city = (City) getArguments().getSerializable(ARG_CITY);
+        setForecast(city.getForecast());
 
         return root;
     }
