@@ -2,6 +2,7 @@ package com.biscarri.guedr.activity;
 
 import android.app.FragmentManager;
 import android.os.Bundle;
+import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
@@ -43,10 +44,17 @@ public class CityPagerActivity  extends AppCompatActivity{
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
-            finish();
+            //Esto me asegura que finaliza la actividad actual y regresa a la que hayamos definido en el AndroidManifest.xml
+            //Sirve si pudiera acceder a CityPager desde varios sitios y no quiero marear al usuario con la navegacion
+            //Ejemplo: correo de Gmail
+            NavUtils.navigateUpFromSameTask(this);
             return true;
         }
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public void onBackPressed() {
+        NavUtils.navigateUpFromSameTask(this);
+    }
 }
