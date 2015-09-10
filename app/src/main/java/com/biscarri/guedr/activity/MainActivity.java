@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.DisplayMetrics;
 import android.view.MenuItem;
 
 import com.biscarri.guedr.R;
@@ -22,23 +23,53 @@ public class MainActivity extends AppCompatActivity implements CityListFragment.
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //Clase para obtener datos de tamaño del dispositivo
+        DisplayMetrics metrics = getResources().getDisplayMetrics();
+        int width = metrics.widthPixels;
+        int height = metrics.heightPixels;
+        float density = metrics.density;
+        int dpWidth = (int) (width/density);
+        int dpHeight = (int) (height/density);
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         FragmentManager fm = getFragmentManager();
-        if (fm.findFragmentById(R.id.fragment) == null) {
-            fm.beginTransaction()
-                    //.add(R.id.fragment, CityPagerFragment.newInstance())
-                    .add(R.id.fragment, CityListFragment.newInstance())
-                    .commit();
+
+        //Miramos si existe la zona para insertar cityList
+        if (findViewById(R.id.cityList) != null) {
+            //Si existe la zona, mireo si hay que crear el fragment
+            if (fm.findFragmentById(R.id.cityList) == null) {
+                fm.beginTransaction()
+                        //.add(R.id.fragment, CityPagerFragment.newInstance())
+                        .add(R.id.cityList, CityListFragment.newInstance())
+                        .commit();
+            }
+        }
+        if (findViewById(R.id.cityPager) != null) {
+            if (fm.findFragmentById(R.id.cityPager) == null) {
+                fm.beginTransaction()
+                        .add(R.id.cityPager, CityPagerFragment.newInstance(0))
+                        .commit();
+            }
         }
     }
 
     @Override
     public void onCitySelected(City city, int index) {
-        //Lanzar una activity
-        Intent cityPagerIntent = new Intent(this, CityPagerActivity.class);
-        cityPagerIntent.putExtra(CityPagerActivity.EXTRA_CITY_INDEX, index);
-        startActivity(cityPagerIntent);
+        //Vamos a averiguar si tengo un viewpager en pantlla y tengo que mover el view pager a otra posicion
+        //o tengo que abrir otra actvity
+
+        if (findViewById(R.id.cityPager) != null) {
+            //Hay hueco para el city pager: lo muevo a la ciudad seleccionada
+            FragmentManager fm = getFragmentManager();
+            CityPagerFragment cityPagerFragment = (CityPagerFragment) fm.findFragmentById(R.id.cityPager);
+            cityPagerFragment.goToCity(index);
+        }else {
+            //Lanzar una activity
+            Intent cityPagerIntent = new Intent(this, CityPagerActivity.class);
+            cityPagerIntent.putExtra(CityPagerActivity.EXTRA_CITY_INDEX, index);
+            startActivity(cityPagerIntent);
+        }
     }
 }
