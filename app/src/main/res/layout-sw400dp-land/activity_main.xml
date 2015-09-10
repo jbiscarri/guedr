@@ -12,7 +12,10 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:divider="?android:listDivider"
+        android:showDividers="middle"
+        android:dividerPadding="1dp">
 
         <FrameLayout android:layout_width="0dp"
                      android:layout_height="match_parent"
@@ -20,9 +23,9 @@
                      android:id="@+id/cityList">
         </FrameLayout>
 
-        <View android:layout_width="1dp"
-              android:layout_height="match_parent"
-              android:background="@android:color/black" />
+        <!--<View android:layout_width="1dp"-->
+              <!--android:layout_height="match_parent"-->
+              <!--android:background="@android:color/black" />-->
 
         <FrameLayout android:layout_width="0dp"
                      android:layout_height="match_parent"
