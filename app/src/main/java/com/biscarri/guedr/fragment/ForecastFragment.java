@@ -28,12 +28,14 @@ public class ForecastFragment extends Fragment {
 
     private static final String ARG_CITY = "city";
 
+    private City mCity;
+
     private ImageView mIcon;
     private TextView mMaxTemp;
     private TextView mMinTemp;
     private TextView mHumidity;
     private TextView mDescription;
-    private Forecast mForecast;
+    private TextView mCityName;
 
     private int mCurrentMetrics;
 
@@ -54,6 +56,9 @@ public class ForecastFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
+        if (getArguments() != null) {
+            mCity = (City) getArguments().getSerializable(ARG_CITY);
+        }
     }
 
     @Nullable
@@ -67,16 +72,17 @@ public class ForecastFragment extends Fragment {
         mHumidity = (TextView) root.findViewById(R.id.humidity);
         mDescription = (TextView) root.findViewById(R.id.forecast_description);
         mIcon = (ImageView) root.findViewById(R.id.forecast_image);
+        mCityName = (TextView) root.findViewById(R.id.city);
         mCurrentMetrics = getCurrentMetricsFromSettings();
 
-        City city = (City) getArguments().getSerializable(ARG_CITY);
-        setForecast(city.getForecast());
+        mCityName.setText(mCity.getName());
+        setForecast(mCity.getForecast());
+
 
         return root;
     }
 
     public void setForecast(Forecast forecast) {
-        mForecast = forecast;
 
         float maxTemp = (mCurrentMetrics == SettingsActivity.PREF_CELSIUS)?forecast.getMaxTemp() : toFarenheit(forecast.getMaxTemp());
         float minTemp = (mCurrentMetrics == SettingsActivity.PREF_CELSIUS)?forecast.getMinTemp() : toFarenheit(forecast.getMinTemp());
@@ -87,6 +93,8 @@ public class ForecastFragment extends Fragment {
         mMinTemp.setText(String.format(getString(R.string.min_temp_parameter), minTemp, metricString) );
         mHumidity.setText(String.format(getString(R.string.humidity_parameter), (int)forecast.getHumidity()));
         mDescription.setText(forecast.getDescription());
+       // mIcon.setImageResource(forecast.getIcon());
+
     }
 
     public int getCurrentMetricsFromSettings() {
@@ -125,19 +133,19 @@ public class ForecastFragment extends Fragment {
         int metrics = getCurrentMetricsFromSettings();
         if (metrics != mCurrentMetrics) {
             mCurrentMetrics = metrics;
-            setForecast(mForecast);
+            setForecast(mCity.getForecast());
             //android.R.id.content -> id de la vista raiz de mi app
             //Snackbar.make(findViewById(android.R.id.content), "Preferencias actualizadas", Snackbar.LENGTH_LONG).show();
             final SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(getActivity());
 
             //en lugar de root podría poner getView()
-            Snackbar.make(mRoot.findViewById(android.R.id.content), R.string.updated_preferences, Snackbar.LENGTH_LONG)
+            Snackbar.make(getView(), R.string.updated_preferences, Snackbar.LENGTH_LONG)
                     .setAction(R.string.undo, new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
                             pref.edit().putString(getString(R.string.metric_selection), String.valueOf(previousMetrics)).apply();
                             mCurrentMetrics = previousMetrics;
-                            setForecast(mForecast);
+                            setForecast(mCity.getForecast());
                         }
                     }).show();
         }

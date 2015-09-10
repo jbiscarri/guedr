@@ -3,21 +3,19 @@ package com.biscarri.guedr.activity;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.Configuration;
-import android.media.Ringtone;
-import android.media.RingtoneManager;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
-import android.preference.PreferenceCategory;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.preference.RingtonePreference;
-import android.text.TextUtils;
-import android.view.MenuItem;
-import android.support.v4.app.NavUtils;
+import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import com.biscarri.guedr.R;
 
@@ -39,6 +37,25 @@ public class SettingsActivity extends PreferenceActivity {
 
     public static final int PREF_CELSIUS = 0;
     public static final int PREF_FARENHEIT = 1;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        ViewGroup root = (ViewGroup) findViewById(android.R.id.content);
+        LinearLayout rootChild = (LinearLayout) root.getChildAt(0);
+        Toolbar bar = (Toolbar) LayoutInflater.from(this).inflate(R.layout.toolbar_settings, rootChild, false);
+        rootChild.addView(bar, 0);
+        bar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
+    }
+
+
 
     /**
      * {@inheritDoc}
