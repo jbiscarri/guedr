@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity implements CityListFragment.
             //Controlo el boton back de la tool bar
             FragmentManager fm = getFragmentManager();
             fm.popBackStack();
-            if (fm.getBackStackEntryCount() == 1)
+            if ((fm.getBackStackEntryCount() == 1) && (getSupportActionBar() != null))
                 getSupportActionBar().setDisplayHomeAsUpEnabled(false);
             return true;
         }
@@ -55,7 +55,8 @@ public class MainActivity extends AppCompatActivity implements CityListFragment.
                 .addToBackStack(null)//Este id sirve para ir a un elemento del stack en concreto
                 .commit();
                 //Ponemos la flecha back para navegar atras
-                getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+                if (getSupportActionBar() != null)
+                    getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     //Metodo que sabe cuando se aprieta el back (boton)
@@ -67,7 +68,7 @@ public class MainActivity extends AppCompatActivity implements CityListFragment.
         FragmentManager fm = getFragmentManager();
         if (fm.getBackStackEntryCount() > 0) {
             fm.popBackStack();
-            if (fm.getBackStackEntryCount() == 1)
+            if ((fm.getBackStackEntryCount() == 1) && (getSupportActionBar() != null))
                 getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         }else {
             super.onBackPressed();
