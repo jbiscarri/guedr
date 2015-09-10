@@ -31,14 +31,28 @@ public class CityPagerFragment extends Fragment {
     private ViewPager mPager;
     private int mInitialIndex;
 
-    public static CityPagerFragment newInstance() {
-        return new CityPagerFragment();
+    public static CityPagerFragment newInstance(int initialCityIndex) {
+        //Creamos fragment
+        CityPagerFragment fragment = new CityPagerFragment();
+
+        //Creamos argumentos y empaquetamos
+        Bundle arguments = new Bundle();
+        arguments.putInt(ARG_CITY_INDEX, initialCityIndex);
+        //asignamos argumentos al fragment
+        fragment.setArguments(arguments);
+
+        return fragment;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
+
+        //Recojo los argumentos
+        if (getArguments() != null) {
+            mInitialIndex = getArguments().getInt(ARG_CITY_INDEX);
+        }
     }
 
     @Nullable
@@ -47,6 +61,7 @@ public class CityPagerFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         View root = inflater.inflate(R.layout.fragment_citypager, container, false);
+
         mCities = Cities.getInstance();
 
         mPager = (ViewPager) root.findViewById(R.id.view_pager);
@@ -54,9 +69,7 @@ public class CityPagerFragment extends Fragment {
 
         mPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
-            }
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) { }
 
             @Override
             public void onPageSelected(int position) {
@@ -64,16 +77,23 @@ public class CityPagerFragment extends Fragment {
             }
 
             @Override
-            public void onPageScrollStateChanged(int state) {
-
-            }
+            public void onPageScrollStateChanged(int state) { }
         });
 
-        updateCityInfo(mPager.getCurrentItem());
+        //Para actualizar el texto de la primera ciudad y mostrar la que toque
+        goToCity(mInitialIndex);
 
         return root;
     }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        //Quitamos la flecha back para no navegar atras
+
+    }
+
+    //Metodos para movernos por la ciudad
     protected void updateCityInfo(int position) {
         ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
         if (actionBar != null) {
@@ -81,11 +101,17 @@ public class CityPagerFragment extends Fragment {
         }
     }
 
+    public void goToCity(int index) {
+        mPager.setCurrentItem(index);
+        updateCityInfo();
+    }
+
     protected void updateCityInfo() {
         updateCityInfo(mPager.getCurrentItem());
     }
 
 
+    //M'etodos de menu
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
@@ -95,11 +121,14 @@ public class CityPagerFragment extends Fragment {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
        if (item.getItemId() == R.id.next) {
-            mPager.setCurrentItem(mPager.getCurrentItem()+1);
+           mPager.setCurrentItem(mPager.getCurrentItem()+1);
+           updateCityInfo();
+           return true;
        } else if (item.getItemId() == R.id.previous) {
            mPager.setCurrentItem(mPager.getCurrentItem()-1);
+           updateCityInfo();
+           return true;
        }
-        updateCityInfo();
 
         return super.onOptionsItemSelected(item);
     }
