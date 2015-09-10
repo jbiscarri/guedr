@@ -1,6 +1,7 @@
 package com.biscarri.guedr.activity;
 
 import android.app.FragmentManager;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -34,44 +35,10 @@ public class MainActivity extends AppCompatActivity implements CityListFragment.
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == android.R.id.home) {
-            //Controlo el boton back de la tool bar
-            FragmentManager fm = getFragmentManager();
-            fm.popBackStack();
-            if ((fm.getBackStackEntryCount() == 1) && (getSupportActionBar() != null))
-                getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
-    @Override
     public void onCitySelected(City city, int index) {
-        FragmentManager fm = getFragmentManager();
-
-        fm.beginTransaction()
-                .replace(R.id.fragment, CityPagerFragment.newInstance(index))
-                .addToBackStack(null)//Este id sirve para ir a un elemento del stack en concreto
-                .commit();
-                //Ponemos la flecha back para navegar atras
-                if (getSupportActionBar() != null)
-                    getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-    }
-
-    //Metodo que sabe cuando se aprieta el back (boton)
-
-    @Override
-    public void onBackPressed() {
-        //Hay que eliminar el super, para que no haga finish
-        //super.onBackPressed();
-        FragmentManager fm = getFragmentManager();
-        if (fm.getBackStackEntryCount() > 0) {
-            fm.popBackStack();
-            if ((fm.getBackStackEntryCount() == 1) && (getSupportActionBar() != null))
-                getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-        }else {
-            super.onBackPressed();
-        }
+        //Lanzar una activity
+        Intent cityPagerIntent = new Intent(this, CityPagerActivity.class);
+        cityPagerIntent.putExtra(CityPagerActivity.EXTRA_CITY_INDEX, index);
+        startActivity(cityPagerIntent);
     }
 }

@@ -65,7 +65,7 @@ public class CityPagerFragment extends Fragment {
         mCities = Cities.getInstance();
 
         mPager = (ViewPager) root.findViewById(R.id.view_pager);
-        mPager.setAdapter(new CityPagerAdapter(getChildFragmentManager()));
+        mPager.setAdapter(new CityPagerAdapter(getFragmentManager()));
 
         mPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
