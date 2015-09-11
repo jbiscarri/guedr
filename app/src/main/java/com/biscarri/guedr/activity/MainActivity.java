@@ -5,14 +5,18 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.biscarri.guedr.R;
 import com.biscarri.guedr.fragment.CityListFragment;
 import com.biscarri.guedr.fragment.CityPagerFragment;
+import com.biscarri.guedr.model.Cities;
 import com.biscarri.guedr.model.City;
 
 /**
@@ -57,6 +61,22 @@ public class MainActivity extends AppCompatActivity implements CityListFragment.
                         .add(R.id.cityPager, CityPagerFragment.newInstance(lastCityIndex))
                         .commit();
             }
+        }
+
+        //Obtenemos referencia a FAB para decirle que pasa si lo pulsan
+        FloatingActionButton floatingActionButton = (FloatingActionButton) findViewById(R.id.app_city_button);
+        if (floatingActionButton != null) {
+            floatingActionButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Cities cities = Cities.getInstance(MainActivity.this);
+                    cities.addCity(String.format("Ciudad %d", cities.getCities().size() + 1));
+                    Snackbar.make(
+                            findViewById(android.R.id.content),
+                            "Ciudad añadida",
+                            Snackbar.LENGTH_LONG).show();
+                }
+            }) ;
         }
     }
 

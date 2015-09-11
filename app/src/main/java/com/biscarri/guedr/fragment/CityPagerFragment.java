@@ -2,11 +2,16 @@ package com.biscarri.guedr.fragment;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v13.app.FragmentPagerAdapter;
+import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -16,6 +21,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 
 import com.biscarri.guedr.R;
 import com.biscarri.guedr.model.Cities;
@@ -24,10 +30,12 @@ import com.biscarri.guedr.model.City;
 /**
  * Created by joanbiscarri on 08/09/15.
  */
-public class CityPagerFragment extends Fragment {
+public class CityPagerFragment extends Fragment{
 
     //Clave del argumento del Fragment para sacarlo del Bundle arguments
     private static final String ARG_CITY_INDEX = "cityIndex";
+    private BroadcastReceiver mBroadcastReceiver;
+
 
     //Clave  del diccionario de preferences para guardar la ultima ciudad seleccionada
     public static final String PREF_LAST_CITY = "com.biscarri.guedr.fragment.CityPagerFragment.PREF_LAST_CITY";
@@ -68,10 +76,11 @@ public class CityPagerFragment extends Fragment {
         super.onCreateView(inflater, container, savedInstanceState);
         View root = inflater.inflate(R.layout.fragment_citypager, container, false);
 
-        mCities = Cities.getInstance();
+        mCities = Cities.getInstance(getActivity());
 
         mPager = (ViewPager) root.findViewById(R.id.view_pager);
-        mPager.setAdapter(new CityPagerAdapter(getFragmentManager()));
+        CityPagerAdapter cityPagerAdapter = new CityPagerAdapter(getFragmentManager());
+        mPager.setAdapter(cityPagerAdapter);
 
         mPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
@@ -89,14 +98,21 @@ public class CityPagerFragment extends Fragment {
         //Para actualizar el texto de la primera ciudad y mostrar la que toque
         goToCity(mInitialIndex);
 
+        //Me subscribo al broadcast
+        //mBroadcastReceiver = new CityBroadcastReceiver(cityPagerAdapter);
+        mBroadcastReceiver = new CityBroadcastReceiver(mPager.getAdapter());
+        getActivity().registerReceiver(
+                mBroadcastReceiver,
+                new IntentFilter(Cities.CITY_LIST_CHANGED_ACTION));
         return root;
+
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        //Quitamos la flecha back para no navegar atras
-
+        getActivity().unregisterReceiver(mBroadcastReceiver);
+        mBroadcastReceiver = null;
     }
 
     //Metodos para movernos por la ciudad
@@ -106,7 +122,7 @@ public class CityPagerFragment extends Fragment {
                 .putInt(PREF_LAST_CITY, position)
                 .apply();
         ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
-        if (actionBar != null) {
+        if (actionBar != null && mCities.getCities().size() > 0) {
             actionBar.setTitle(mCities.getCities().get(position).getName());
         }
     }
@@ -161,7 +177,7 @@ public class CityPagerFragment extends Fragment {
 
         public CityPagerAdapter(FragmentManager fm) {
             super(fm);
-            mCities = Cities.getInstance();
+            mCities = Cities.getInstance(getActivity());
         }
 
         @Override
@@ -178,6 +194,23 @@ public class CityPagerFragment extends Fragment {
         public CharSequence getPageTitle(int position) {
             City city = mCities.getCities().get(position);
             return String.format(city.getName());
+        }
+    }
+
+    //Esta clase se va a enterar de cuando ha cambiado el modelo cities
+    private class CityBroadcastReceiver extends BroadcastReceiver {
+
+        private PagerAdapter mAdapter;
+
+        public CityBroadcastReceiver(PagerAdapter adapter) {
+            super();
+            mAdapter = adapter;
+        }
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            //Hay nuevos cambios, aviso al adaptador para que vuelva a recargarse
+            mAdapter.notifyDataSetChanged();
         }
     }
 }
