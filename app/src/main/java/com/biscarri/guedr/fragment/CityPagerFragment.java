@@ -2,7 +2,9 @@ package com.biscarri.guedr.fragment;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v13.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -26,6 +28,10 @@ public class CityPagerFragment extends Fragment {
 
     //Clave del argumento del Fragment para sacarlo del Bundle arguments
     private static final String ARG_CITY_INDEX = "cityIndex";
+
+    //Clave  del diccionario de preferences para guardar la ultima ciudad seleccionada
+    public static final String PREF_LAST_CITY = "com.biscarri.guedr.fragment.CityPagerFragment.PREF_LAST_CITY";
+
 
     private Cities mCities;
     private ViewPager mPager;
@@ -95,6 +101,10 @@ public class CityPagerFragment extends Fragment {
 
     //Metodos para movernos por la ciudad
     protected void updateCityInfo(int position) {
+        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        pref.edit()
+                .putInt(PREF_LAST_CITY, position)
+                .apply();
         ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
         if (actionBar != null) {
             actionBar.setTitle(mCities.getCities().get(position).getName());

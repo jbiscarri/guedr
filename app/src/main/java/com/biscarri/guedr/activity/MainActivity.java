@@ -2,7 +2,9 @@ package com.biscarri.guedr.activity;
 
 import android.app.FragmentManager;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
@@ -48,8 +50,11 @@ public class MainActivity extends AppCompatActivity implements CityListFragment.
         }
         if (findViewById(R.id.cityPager) != null) {
             if (fm.findFragmentById(R.id.cityPager) == null) {
+                SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
+                int lastCityIndex = pref.getInt(CityPagerFragment.PREF_LAST_CITY, 0);
+
                 fm.beginTransaction()
-                        .add(R.id.cityPager, CityPagerFragment.newInstance(0))
+                        .add(R.id.cityPager, CityPagerFragment.newInstance(lastCityIndex))
                         .commit();
             }
         }
